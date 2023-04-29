@@ -1,0 +1,11 @@
+package main
+
+import (
+	"{{ .ProjectName.Lower.ToString }}/api"
+	"{{ .ProjectName.Lower.ToString }}/config"
+)
+
+func main() {
+	application := config.NewApplication()
+	api.NewAPI(application).Listen()
+}

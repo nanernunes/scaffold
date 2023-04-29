@@ -1,0 +1,27 @@
+package config
+
+import (
+	"log"
+
+	"github.com/kelseyhightower/envconfig"
+)
+
+type Config struct {
+	API *API
+}
+
+func handleProcess(err error) {
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+}
+
+func NewConfig() *Config {
+	var api API
+
+	handleProcess(envconfig.Process("api", &api))
+
+	return &Config{
+		API: &api,
+	}
+}

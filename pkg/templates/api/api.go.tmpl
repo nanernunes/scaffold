@@ -1,0 +1,35 @@
+package api
+
+import (
+	"log"
+	"net/http"
+
+	"github.com/nanernunes/scaffold"
+
+	"{{ .ProjectName.Lower.ToString }}/api/controllers"
+	swagger "{{ .ProjectName.Lower.ToString }}/api/.swagger"
+	"{{ .ProjectName.Lower.ToString }}/config"
+)
+
+type API struct {
+	Application *config.Application
+	Router      *scaffold.Router
+}
+
+func (a *API) Listen() {
+	srv := &http.Server{
+		Handler: a.Router,
+		Addr:    a.Application.Config.API.ToString(),
+	}
+
+	log.Fatal(srv.ListenAndServe())
+}
+
+func NewAPI(application *config.Application) (api *API) {
+	api = &API{Application: application, Router: scaffold.NewRouter(nil)}
+	swagger.UseSwagger(api.Router)
+
+	controllers.NewIndexController(api.Router)
+
+	return
+}

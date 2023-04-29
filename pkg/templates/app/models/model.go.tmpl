@@ -1,0 +1,14 @@
+package models
+
+import (
+	"gorm.io/gorm"
+)
+
+type {{ .ResourceName.Camel.ToString }} struct {
+	gorm.Model `json:"-"`
+
+	UUID string `json:"uuid,omitempty" gorm:"type:uuid;uniqueIndex;default:gen_random_uuid()"`
+	{{ range $key, $type := .ResourceFields }}
+	{{ $key.Camel.ToString }} {{ $type }} `json:"{{ $key.Lower.ToString }}"` 
+	{{- end }}
+}

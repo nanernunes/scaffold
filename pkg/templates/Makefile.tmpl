@@ -1,0 +1,49 @@
+.PHONY:{{ .ProjectName.Lower.ToString }}
+
+MAKE:=$(shell which make)
+GOCMD:=$(shell which go)
+GOSWAG:=$(shell which swag)
+DOCKER-COMPOSE:=$(shell which docker-compose)
+
+%:
+	@:
+
+test:
+	@$(GOCMD) test -v ./...
+
+cover:
+	@$(GOCMD) test -v ./... -coverprofile=coverage.txt -covermode=atomic
+	@$(GOCMD) tool cover -func=coverage.txt
+	@$(GOCMD) tool cover -html=coverage.txt
+
+deps:
+	@$(GOCMD) install github.com/swaggo/swag/cmd/swag@latest
+	@$(GOCMD) mod tidy
+	@$(GOCMD) mod download
+
+cli:
+	@$(GOCMD) run cmd/cli/{{ .ProjectName.Lower.ToString }}.go $(filter-out $@,$(MAKECMDGOALS))
+
+build-swagger:
+	@$(GOSWAG) init --parseDependency --generalInfo swagger.go --dir api/.swagger,api/controllers --output api/.swagger/docs
+
+build: build-swagger
+	@$(GOCMD) build -o {{ .ProjectName.Lower.ToString }} cmd/{{ .ProjectName.Lower.ToString }}/{{ .ProjectName.Lower.ToString }}.go
+
+dev: deps build-swagger
+	@$(GOCMD) run cmd/api.go
+
+run: build-swagger
+	@$(GOCMD) run cmd/{{ .ProjectName.Lower.ToString }}/{{ .ProjectName.Lower.ToString }}.go
+
+start:
+	@$(DOCKER-COMPOSE) -f docker/docker-compose.yml up -d
+
+stop:
+	@$(DOCKER-COMPOSE) -f docker/docker-compose.yml stop
+
+dbconsole:
+	@$(DOCKER-COMPOSE) -f docker/docker-compose.yml exec -it postgres psql -U {{ .ProjectName.Lower.ToString }} {{ .ProjectName.Lower.ToString }}
+
+clean:
+	@rm -rf tmp/*

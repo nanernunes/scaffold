@@ -1,0 +1,110 @@
+package controllers
+
+import (
+	"net/http"
+
+	"github.com/nanernunes/scaffold"
+
+	"{{ .ProjectName.Lower.ToString }}/app/models"
+	"{{ .ProjectName.Lower.ToString }}/app/services"
+	"{{ .ProjectName.Lower.ToString }}/config"
+)
+
+type {{ .ResourceName.Camel.Plural.ToString }}Controller struct {
+	Service *services.{{ .ResourceName.Camel.ToString }}Service
+}
+
+func New{{ .ResourceName.Camel.Plural.ToString }}Controller(router *scaffold.Router, application *config.Application) {
+ 	controller := &{{ .ResourceName.Camel.Plural.ToString }}Controller{Service: services.New{{ .ResourceName.Camel.ToString }}Service(application)}
+
+	router.Resource("/{{ .ResourceName.Lower.Plural.ToString }}", controller)
+}
+
+//	@Summary		Get all {{ .ResourceName.Plural.ToString }}
+//	@Description	Get all {{ .ResourceName.Plural.ToString }}
+//	@Tags			{{ .ResourceName.Lower.Plural.ToString }}
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{array}	[]models.{{ .ResourceName.Camel.ToString }}
+//	@Router			/{{ .ResourceName.Lower.Plural.ToString }} [get]
+func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Plural.ToString }}Controller) Index(c *scaffold.Context) {
+	if {{ .ResourceName.Lower.Plural.ToString}}, err := {{ .ResourceName.FirstLetter.Lower.ToString }}c.Service.GetAll(); err == nil {
+		c.Render(http.StatusOK, &{{ .ResourceName.Lower.Plural.ToString}})
+	} else {
+		c.RenderText(http.StatusInternalServerError, err.Error())
+	}
+}
+
+//	@Summary		Create {{ .ResourceName.Camel.ToString }}
+//	@Description	Create new {{ .ResourceName.Camel.ToString }}
+//	@Tags			{{ .ResourceName.Lower.Plural.ToString }}
+//	@Accept			json
+//	@Produce		json
+//	@Param			{{ .ResourceName.Camel.ToString }}	body		models.{{ .ResourceName.Camel.ToString }}	true	"{{ .ResourceName.Camel.ToString }} object"
+//	@Success		201		{object}	models.{{ .ResourceName.Camel.ToString }}
+//	@Router			/{{ .ResourceName.Lower.Plural.ToString }} [post]
+func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Plural.ToString }}Controller) Create(c *scaffold.Context) {
+	var {{ .ResourceName.ToString }} models.{{ .ResourceName.Camel.ToString }}
+	c.UnmarshalBody(&{{ .ResourceName.ToString }})
+
+	if err := {{ .ResourceName.FirstLetter.Lower.ToString }}c.Service.Create(&{{ .ResourceName.ToString }}); err == nil {
+		c.Render(http.StatusCreated, &{{ .ResourceName.ToString }})
+	} else {
+		c.RenderText(http.StatusBadRequest, "")
+	}
+}
+
+//	@Summary		Get {{ .ResourceName.Camel.ToString }}
+//	@Description	Get {{ .ResourceName.Camel.ToString }} by UUID
+//	@Tags			{{ .ResourceName.Lower.Plural.ToString }}
+//	@Accept			json
+//	@Produce		json
+//	@Param			uuid	path		string	true	"{{ .ResourceName.Camel.ToString }} UUID"
+//	@Success		200	{object}	models.{{ .ResourceName.Camel.ToString }}
+//	@Failure		404	{object}	scaffold.ResponseError
+//	@Router			/{{ .ResourceName.Lower.Plural.ToString }}/{uuid} [get]
+func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Plural.ToString }}Controller) Show(c *scaffold.Context) {
+	if {{ .ResourceName.Lower.ToString}}, err := {{ .ResourceName.FirstLetter.Lower.ToString }}c.Service.GetOne(c.Param("uuid")); err == nil {
+		c.Render(http.StatusOK, &{{ .ResourceName.Lower.ToString}})
+	} else {
+		c.RenderText(http.StatusNotFound, "")
+	}
+}
+
+//	@Summary		Update {{ .ResourceName.Camel.ToString }}
+//	@Description	Update {{ .ResourceName.Camel.ToString }} by UUID
+//	@Tags			{{ .ResourceName.Lower.Plural.ToString }}
+//	@Accept			json
+//	@Produce		json
+//	@Param			uuid		path	string			true	"{{ .ResourceName.Camel.ToString }} UUID"
+//	@Param			{{ .ResourceName.Camel.ToString }}	body	models.{{ .ResourceName.Camel.ToString }}	true	"{{ .ResourceName.Camel.ToString }} object"
+//	@Success		204
+//	@Failure		404	{object}	scaffold.ResponseError
+//	@Router			/{{ .ResourceName.Lower.Plural.ToString }}/{uuid} [patch]
+func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Plural.ToString }}Controller) Update(c *scaffold.Context) {
+	var {{ .ResourceName.Lower.ToString }} models.{{ .ResourceName.Camel.ToString }}
+	c.UnmarshalBody(&{{ .ResourceName.Lower.ToString }})
+
+	if err := {{ .ResourceName.FirstLetter.Lower.ToString }}c.Service.Update(c.Param("uuid"), &{{ .ResourceName.Lower.ToString }}); err == nil {
+		c.Render(http.StatusOK, &{{ .ResourceName.Lower.ToString}})
+	} else {
+		c.RenderText(http.StatusBadRequest, "")
+	}
+}
+
+//	@Summary		Delete {{ .ResourceName.Camel.ToString }}
+//	@Description	Delete {{ .ResourceName.Camel.ToString }} by UUID
+//	@Tags			{{ .ResourceName.Lower.Plural.ToString }}
+//	@Accept			json
+//	@Produce		json
+//	@Param			uuid	path	string	true	"{{ .ResourceName.Camel.ToString }} UUID"
+//	@Success		204
+//	@Failure		404	{object}	scaffold.ResponseError
+//	@Router			/{{ .ResourceName.Lower.Plural.ToString }}/{uuid} [delete]
+func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Plural.ToString }}Controller) Delete(c *scaffold.Context) {
+	if err := {{ .ResourceName.FirstLetter.Lower.ToString }}c.Service.Delete(c.Param("uuid")); err == nil {
+		c.Render(http.StatusOK, err == nil)
+	} else {
+		c.RenderText(http.StatusNotFound, "")
+	}
+}

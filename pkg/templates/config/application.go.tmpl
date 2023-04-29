@@ -1,0 +1,26 @@
+package config
+
+import (
+	"github.com/nanernunes/scaffold"
+)
+
+type Application struct {
+	Config   *Config
+	Database *scaffold.Postgres
+}
+
+func NewApplication() *Application {
+    config := NewConfig()
+
+	models := []interface{}{
+		/* Insert your models here,
+		   e.g: models.User{} */
+	}
+
+	database := scaffold.NewPostgres(models)
+
+	return &Application{
+		Config:   config,
+		Database: database,
+	}
+}

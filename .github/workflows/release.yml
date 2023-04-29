@@ -1,0 +1,130 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  GO111MODULE: "on"
+  CGO_ENABLED: "0"
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: "1.20.2"
+
+      - name: Build Linux AMD64
+        run: make deps build && mv scaffold{,-linux-amd64}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: binaries
+          path: ./scaffold-linux-amd64
+
+  windows:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: "1.20.2"
+
+      - name: Build Windows AMD64
+        run: GOOS=windows GOARCH=amd64 make deps build && mv scaffold{,-windows-amd64.exe}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: binaries
+          path: ./scaffold-windows-amd64.exe
+
+  macos:
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: "1.20.2"
+
+      - name: Build macOS Intel
+        run: GOARCH=amd64 make deps build && mv scaffold{,-macos-intel}
+
+      - name: Build macOS ARM64
+        run: GOARCH=arm64 make deps build && mv scaffold{,-macos-arm64}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: binaries
+          path: |
+            ./scaffold-macos-intel
+            ./scaffold-macos-arm64
+
+  release:
+    runs-on: ubuntu-latest
+    needs:
+      - linux
+      - windows
+      - macos
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: binaries
+
+      - name: Upload Windows asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./scaffold-windows-amd64.exe
+          asset_name: scaffold-windows-amd64.exe
+          asset_content_type: application/vnd.microsoft.portable-executable
+
+      - name: Upload Linux asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./scaffold-linux-amd64
+          asset_name: scaffold-linux-amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload macOS (Intel) asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./scaffold-macos-intel
+          asset_name: scaffold-macos-intel
+          asset_content_type: application/octet-stream
+
+      - name: Upload macOS (ARM64) asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./scaffold-macos-arm64
+          asset_name: scaffold-macos-arm64
+          asset_content_type: application/octet-stream

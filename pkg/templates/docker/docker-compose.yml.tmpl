@@ -1,0 +1,34 @@
+version: "3.9"
+
+networks:
+  {{ .ProjectName.Lower.ToString }}:
+    name: {{ .ProjectName.Lower.ToString }}
+    external: true
+
+services:
+  postgres:
+    extends:
+      file: services/postgres.yml
+      service: postgres
+    volumes:
+      - ${PWD}/tmp/pgdata-{{ .ProjectName.Lower.ToString }}:/var/lib/postgresql/data
+
+  rabbitmq:
+    extends:
+      file: services/rabbitmq.yml
+      service: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - 15672:15672
+    volumes:
+      - ${PWD}/tmp/rabbitmq-{{ .ProjectName.Lower.ToString }}:/var/lib/rabbitmq
+
+  {{ .ProjectName.Lower.ToString }}:
+    extends:
+      file: services/{{ .ProjectName.Lower.ToString }}.yml
+      service: {{ .ProjectName.Lower.ToString }}
+    ports:
+      - 8080:8080
+    depends_on:
+      postgres:
+        condition: service_healthy

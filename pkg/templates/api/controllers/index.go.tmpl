@@ -1,0 +1,26 @@
+package controllers
+
+import (
+	"net/http"
+
+	"github.com/nanernunes/scaffold"
+)
+
+type IndexController struct {}
+
+func NewIndexController(router *scaffold.Router) (index *IndexController) {
+ 	index = &IndexController{}
+
+	router.GET("/index", index.Index)
+    router.GET("/index.json", index.IndexToJSON)
+
+	return
+}
+
+func (i *IndexController) Index(c *scaffold.Context) {
+    c.RenderText(http.StatusOK, "It's Scaffolding!")
+}
+
+func (i *IndexController) IndexToJSON(c *scaffold.Context) {
+	c.Render(http.StatusOK, struct{ Body string }{Body: "JSON Content!"})
+}

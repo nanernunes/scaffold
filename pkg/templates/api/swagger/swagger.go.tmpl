@@ -1,0 +1,45 @@
+package swagger
+
+import (
+	"net/http"
+
+	"github.com/nanernunes/scaffold"
+	httpSwagger "github.com/swaggo/http-swagger"
+
+	/* generated with: make build-swagger */
+	_ "{{ .ProjectName.Lower.ToString }}/api/.swagger/docs"
+)
+
+type Swagger struct {
+	Router *scaffold.Router
+}
+
+//	@title			{{ .ProjectName.Lower.Camel.ToString }} API
+//	@version		1.0
+//	@description	This is the {{ .ProjectName.Lower.Camel.ToString }} API.
+//	@termsOfService	http://swagger.io/terms/
+
+//	@contact.name	API Support
+//	@contact.url	http://www.swagger.io/support
+//	@contact.email	support@swagger.io
+
+//	@license.name	Apache 2.0
+//	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @BasePath	/
+func UseSwagger(router *scaffold.Router) {
+	c := Swagger{Router: router}
+
+	swaggerHandler := httpSwagger.Handler(
+		httpSwagger.URL("/swagger/doc.json"),
+		httpSwagger.DeepLinking(true),
+		httpSwagger.DocExpansion("none"),
+		httpSwagger.DomID("swagger-ui"),
+	)
+
+	c.Router.Internal.PathPrefix("/swagger/").Handler(swaggerHandler)
+
+	c.Router.Internal.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/swagger/index.html", http.StatusMovedPermanently)
+	})
+}
