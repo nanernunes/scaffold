@@ -90,7 +90,7 @@ jobs:
           name: binaries
 
       - name: Upload Windows asset
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
