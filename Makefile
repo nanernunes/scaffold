@@ -24,5 +24,5 @@ cli:
 	@$(GOCMD) run cmd/scaffold/scaffold.go $(filter-out $@,$(MAKECMDGOALS))
 
 build:
-	@sed -Er -i "" -e "s@(/scaffold) .*@\1 $(TAG)@" pkg/templates/go.mod.tmpl
+	@sed -Eir "s@(/scaffold) .*@\1 $(TAG)@" pkg/templates/go.mod.tmpl
 	@$(GOCMD) build -o scaffold cmd/scaffold/scaffold.go
