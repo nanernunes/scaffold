@@ -19,13 +19,13 @@ jobs:
           go-version: "1.20.2"
 
       - name: Build Linux AMD64
-        run: make deps build && mv scaffold{,-$(uname -s)-$(uname -m)}
+        run: make deps build && mv scaffold{,-Linux-x86_64}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: binaries
-          path: ./scaffold{,-$(uname -s)-$(uname -m)}
+          path: ./scaffold-Linux-x86_64
 
   windows:
     runs-on: ubuntu-latest
@@ -53,18 +53,18 @@ jobs:
           go-version: "1.20.2"
 
       - name: Build macOS Intel
-        run: GOARCH=amd64 make deps build && mv scaffold{,-$(uname -s)-$(uname -m)}
+        run: GOARCH=amd64 make deps build && mv scaffold{,-Darwin-x86_64}
 
       - name: Build macOS ARM64
-        run: GOARCH=arm64 make deps build && mv scaffold{,-$(uname -s)-arm64}
+        run: GOARCH=arm64 make deps build && mv scaffold{,-Darwin-arm64}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: binaries
           path: |
-            ./scaffold-$(uname -s)-$(uname -m)
-            ./scaffold-$(uname -s)-arm64
+            ./scaffold-Darwin-x86_64
+            ./scaffold-Darwin-arm64
 
   release:
     runs-on: ubuntu-latest
