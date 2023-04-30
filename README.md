@@ -19,7 +19,10 @@ Scaffold is a Golang framework that automates the creation of Swaggered APIs.
 
 To install Scaffold, run the following command:
 
-`go get github.com/nanernunes/scaffold`
+```bash
+sudo curl -L "https://github.com/nanernunes/scaffold/releases/latest/download/scaffold-$(uname -s)-$(uname -m)" -o /usr/local/bin/scaffold
+sudo chmod +x /usr/local/bin/scaffold
+```
 
 ## Getting Started with Scaffold
 
