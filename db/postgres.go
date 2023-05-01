@@ -1,4 +1,4 @@
-package scaffold
+package db
 
 import (
 	"fmt"
@@ -8,8 +8,12 @@ import (
 	"gorm.io/gorm"
 )
 
-type Postgres struct {
+type PostgresDatabase struct {
 	DB *gorm.DB
+}
+
+func (p *PostgresDatabase) GetDB() *gorm.DB {
+	return p.DB
 }
 
 type PostgresConfig struct {
@@ -35,18 +39,11 @@ func (r *PostgresConfig) ToString() string {
 	)
 }
 
-func NewPostgres(models []interface{}) *Postgres {
+func NewPostgres(models []interface{}) *PostgresDatabase {
 	db, err := gorm.Open(postgres.Open(NewPostgresConfig().ToString()), &gorm.Config{})
-
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	for _, model := range models {
-		db.AutoMigrate(model)
-	}
-
-	return &Postgres{
-		DB: db,
-	}
+	return &PostgresDatabase{DB: db}
 }

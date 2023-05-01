@@ -69,6 +69,7 @@ func (t *Template) CreateFiles(files map[string]string) {
 
 func (t *Template) Skel() {
 	templates := map[string]string{
+		"pkg/templates/.gitignore.tmpl":               ".gitignore",
 		"pkg/templates/go.mod.tmpl":                   "go.mod",
 		"pkg/templates/Makefile.tmpl":                 "Makefile",
 		"pkg/templates/api/api.go.tmpl":               "api/api.go",
@@ -102,6 +103,9 @@ func (t *Template) AddMVC(name string, fields map[*helpers.Name]string) {
 	}
 
 	t.CreateFiles(templates)
+
+	cmd := helpers.NewCommand(true, t.ProjectName.ToString())
+	cmd.Run(fmt.Sprintf("swag fmt api/controllers/%s.go", t.ResourceName.Lower().Plural().ToString()))
 
 	helpers.AppendInFile(
 		"api/api.go",

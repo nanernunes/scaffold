@@ -1,46 +1,44 @@
 package services
 
 import (
-	"github.com/nanernunes/scaffold"
-
 	"{{ .ProjectName.Lower.ToString }}/app/models"
 	"{{ .ProjectName.Lower.ToString }}/config"
+
+	"gorm.io/gorm"
 )
 
 type {{ .ResourceName.Camel.ToString }}Service struct {
 	Application *config.Application
-	ORM         *scaffold.ORM
+	DB          *gorm.DB
 }
 
 func New{{ .ResourceName.Camel.ToString }}Service(application *config.Application) *{{ .ResourceName.Camel.ToString }}Service {
 	return &{{ .ResourceName.Camel.ToString }}Service{
 		Application: application,
-		ORM:         scaffold.NewORM(application.Database.DB, models.{{ .ResourceName.Camel.ToString }}{}),
+		DB:          application.Database.GetDB(),
 	}
 }
 
 func ({{ .ResourceName.Lower.FirstLetter.ToString }}s *{{ .ResourceName.Camel.ToString }}Service) GetAll() ([]models.{{ .ResourceName.Camel.ToString }}, error) {
 	var {{ .ResourceName.Lower.Plural.ToString }} []models.{{ .ResourceName.Camel.ToString }}
-	err := {{ .ResourceName.Lower.FirstLetter.ToString }}s.ORM.GetAll(&{{ .ResourceName.Lower.Plural.ToString }})
-
-	return {{ .ResourceName.Lower.Plural.ToString }}, err
+	tx := {{ .ResourceName.Lower.FirstLetter.ToString }}s.DB.Find(&{{ .ResourceName.Lower.Plural.ToString }})
+	return {{ .ResourceName.Lower.Plural.ToString }}, tx.Error
 }
 
 func ({{ .ResourceName.Lower.FirstLetter.ToString }}s *{{ .ResourceName.Camel.ToString }}Service) GetOne(uuid string) (*models.{{ .ResourceName.Camel.ToString }}, error) {
 	var {{ .ResourceName.Lower.ToString }} models.{{ .ResourceName.Camel.ToString }}
-	err := {{ .ResourceName.Lower.FirstLetter.ToString }}s.ORM.FindByUUID(uuid, &{{ .ResourceName.Lower.ToString }})
-
-	return &{{ .ResourceName.Lower.ToString }}, err
+	tx := {{ .ResourceName.Lower.FirstLetter.ToString }}s.DB.Where("uuid = ?", uuid).First(&{{ .ResourceName.Lower.ToString }})
+	return &{{ .ResourceName.Lower.ToString }}, tx.Error
 }
 
 func ({{ .ResourceName.Lower.FirstLetter.ToString }}s *{{ .ResourceName.Camel.ToString }}Service) Create({{ .ResourceName.Lower.ToString }} *models.{{ .ResourceName.Camel.ToString }}) error {
-	return {{ .ResourceName.Lower.FirstLetter.ToString }}s.ORM.Create({{ .ResourceName.Lower.ToString }})
+	return {{ .ResourceName.Lower.FirstLetter.ToString }}s.DB.Create({{ .ResourceName.Lower.ToString }}).Error
 }
 
 func ({{ .ResourceName.Lower.FirstLetter.ToString }}s *{{ .ResourceName.Camel.ToString }}Service) Delete(uuid string) error {
-	return {{ .ResourceName.Lower.FirstLetter.ToString }}s.ORM.DeleteByUUID(uuid)
+	return {{ .ResourceName.Lower.FirstLetter.ToString }}s.DB.Delete(&models.{{ .ResourceName.Camel.ToString }}{UUID: uuid}).Error
 }
 
 func ({{ .ResourceName.Lower.FirstLetter.ToString }}s *{{ .ResourceName.Camel.ToString }}Service) Update(uuid string, {{ .ResourceName.Lower.ToString }} *models.{{ .ResourceName.Camel.ToString }}) error {
-	return {{ .ResourceName.Lower.FirstLetter.ToString }}s.ORM.UpdateByUUID(uuid, &{{ .ResourceName.Lower.ToString }})
+	return {{ .ResourceName.Lower.FirstLetter.ToString }}s.DB.Model({{ .ResourceName.Lower.ToString }}).Where("uuid = ?", uuid).Updates(&{{ .ResourceName.Lower.ToString }}).Error
 }

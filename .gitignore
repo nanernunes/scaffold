@@ -12,8 +12,11 @@ coverage.txt
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
+# Temporary template files
+*.tmplr
+
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
 bin/
-./scaffold
+/scaffold

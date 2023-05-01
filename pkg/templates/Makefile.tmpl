@@ -3,6 +3,7 @@
 MAKE:=$(shell which make)
 GOCMD:=$(shell which go)
 GOSWAG:=$(shell which swag)
+SQLITE:=$(shell which sqlite3)
 DOCKER-COMPOSE:=$(shell which docker-compose)
 
 %:
@@ -43,7 +44,10 @@ stop:
 	@$(DOCKER-COMPOSE) -f docker/docker-compose.yml stop
 
 dbconsole:
+	@$(SQLITE) -header -column scaffold.db
+
+pgconsole:
 	@$(DOCKER-COMPOSE) -f docker/docker-compose.yml exec -it postgres psql -U {{ .ProjectName.Lower.ToString }} {{ .ProjectName.Lower.ToString }}
 
 clean:
-	@rm -rf tmp/*
+	@rm -rf tmp/* db/*

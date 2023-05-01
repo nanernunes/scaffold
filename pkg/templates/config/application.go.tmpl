@@ -1,23 +1,22 @@
 package config
 
 import (
-	"github.com/nanernunes/scaffold"
+	"github.com/nanernunes/scaffold/db"
 )
 
 type Application struct {
 	Config   *Config
-	Database *scaffold.Postgres
+	Database db.Database
 }
 
 func NewApplication() *Application {
     config := NewConfig()
 
 	models := []interface{}{
-		/* Insert your models here,
-		   e.g: models.User{} */
+		/* Models here, e.g: models.User{} */
 	}
 
-	database := scaffold.NewPostgres(models)
+	database := db.New(db.Sqlite, models)
 
 	return &Application{
 		Config:   config,
