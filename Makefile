@@ -12,7 +12,7 @@ DOCKER-COMPOSE:=$(shell which docker-compose)
 test:
 	@$(GOCMD) test -v ./...
 
-cover:
+coverage:
 	@$(GOCMD) test -v ./... -coverprofile=coverage.txt -covermode=atomic
 	@$(GOCMD) tool cover -func=coverage.txt
 	@$(GOCMD) tool cover -html=coverage.txt

@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/nanernunes/scaffold/pkg/helpers"
 )
 
@@ -43,7 +44,7 @@ func (t *Template) CreateFile(src string, dst string, any interface{}) {
 
 	source, _ := templates.ReadFile(src)
 
-	fmt.Printf("    %s  %s\n", helpers.Green("create"), dst)
+	fmt.Printf("    %s  %s\n", color.GreenString("create"), dst)
 
 	tmpl, _ := template.New("temp").Parse(string(source))
 
