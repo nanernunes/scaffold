@@ -85,6 +85,7 @@ func (t *Template) Skel() {
 
 	cmd := helpers.NewCommand(true, t.ProjectName.ToString())
 
+	cmd.Run("make deps")
 	cmd.Run("make build-swagger")
 	cmd.Run("go mod tidy")
 	cmd.Run("go get ./...")
