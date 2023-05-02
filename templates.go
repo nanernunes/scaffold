@@ -106,7 +106,7 @@ func (t *Template) AddMVC(name string, fields map[*helpers.Name]string) {
 	t.CreateFiles(templates)
 
 	cmd := helpers.NewCommand(true, t.ProjectName.ToString())
-	cmd.Run(fmt.Sprintf("swag fmt api/controllers/%s.go", t.ResourceName.Lower().Plural().ToString()))
+	cmd.Run(fmt.Sprintf("$(go env GOPATH)/bin/swag fmt api/controllers/%s.go", t.ResourceName.Lower().Plural().ToString()))
 
 	helpers.AppendInFile(
 		"api/api.go",
