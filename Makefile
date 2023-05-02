@@ -3,8 +3,9 @@
 TAG:=$(shell git describe --tags)
 
 MAKE:=$(shell which make)
-GOCMD:=$(shell which go)
 DOCKER-COMPOSE:=$(shell which docker-compose)
+
+GOCMD:=$(shell which go)
 
 %:
 	@:

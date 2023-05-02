@@ -1,10 +1,13 @@
 .PHONY:{{ .ProjectName.Lower.ToString }}
 
-MAKE:=$(shell which make)
-GOCMD:=$(shell which go)
-GOSWAG:=$(shell which swag)
-SQLITE:=$(shell which sqlite3)
-DOCKER-COMPOSE:=$(shell which docker-compose)
+MAKE := $(shell which make)
+DOCKER-COMPOSE := $(shell which docker-compose)
+
+DB_PATH ?= db/development.db
+
+GOCMD := $(shell which go)
+GOPATH := $(shell $(GOCMD) env GOPATH)
+GOSWAG := $(GOPATH)/bin/swag
 
 %:
 	@:
@@ -44,7 +47,7 @@ stop:
 	@$(DOCKER-COMPOSE) -f docker/docker-compose.yml stop
 
 dbconsole:
-	@$(SQLITE) -header -column scaffold.db
+	@$(SQLITE) -header -column $(DB_PATH)
 
 pgconsole:
 	@$(DOCKER-COMPOSE) -f docker/docker-compose.yml exec -it postgres psql -U {{ .ProjectName.Lower.ToString }} {{ .ProjectName.Lower.ToString }}
