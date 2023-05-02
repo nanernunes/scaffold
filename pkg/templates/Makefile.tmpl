@@ -1,6 +1,7 @@
 .PHONY:{{ .ProjectName.Lower.ToString }}
 
 MAKE := $(shell which make)
+SQLITE := $(shell which sqlite3)
 DOCKER-COMPOSE := $(shell which docker-compose)
 
 DB_PATH ?= db/development.db
