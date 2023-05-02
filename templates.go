@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
+	"go/build"
 	"go/format"
 	"html/template"
 	"io/ioutil"
@@ -106,7 +107,7 @@ func (t *Template) AddMVC(name string, fields map[*helpers.Name]string) {
 	t.CreateFiles(templates)
 
 	cmd := helpers.NewCommand(true, t.ProjectName.ToString())
-	cmd.Run(fmt.Sprintf("$(go env GOPATH)/bin/swag fmt api/controllers/%s.go", t.ResourceName.Lower().Plural().ToString()))
+	cmd.Run(fmt.Sprintf("%s/bin/swag fmt api/controllers/%s.go", build.Default.GOPATH, t.ResourceName.Lower().Plural().ToString()))
 
 	helpers.AppendInFile(
 		"api/api.go",
