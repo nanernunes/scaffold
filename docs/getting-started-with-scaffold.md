@@ -76,10 +76,9 @@ You're seeing this content because of the default **IndexController** (this cont
 
 All controllers must be initialized at `api/api.go` (e.g: IndexController):
 
-```go {5}
+```go {4}
 func NewAPI(application *config.Application) (api *API) {
 	api = &API{Application: application, Router: scaffold.NewRouter(nil)}
-	swagger.UseSwagger(api.Router)
 
 	controllers.NewIndexController(api.Router)
 
@@ -89,28 +88,20 @@ func NewAPI(application *config.Application) (api *API) {
 
 Once the controller `api/controllers/index.go` is initialized you're able to register its routes:
 
-```go {14-15}
-package controllers
-
-import (
-	"net/http"
-
-	"github.com/nanernunes/scaffold"
-)
-
+```go
 type IndexController struct {}
 
 func NewIndexController(router *scaffold.Router) (index *IndexController) {
  	index = &IndexController{}
 
 	router.GET("/index", index.Index)
-    router.GET("/index.json", index.IndexToJSON)
+	router.GET("/index.json", index.IndexToJSON)
 
 	return
 }
 
 func (i *IndexController) Index(c *scaffold.Context) {
-    c.RenderText(http.StatusOK, "It's Scaffolding!")
+	c.RenderText(http.StatusOK, "It's Scaffolding!")
 }
 
 func (i *IndexController) IndexToJSON(c *scaffold.Context) {
@@ -154,8 +145,9 @@ Render the content in HTML (text/html)
 c.RenderHTML(200, "Scaffold<br />Framework!")
 ```
 
-```html
-Scaffold Framework!
+```text
+Scaffold
+Framework!
 ```
 
 ## 4. Generating CRUD
