@@ -7,62 +7,50 @@
 [![LoC](https://tokei.rs/b1/github/nanernunes/scaffold?category=lines)](https://github.com/nanernunes/scaffold)
 [![codecov](https://codecov.io/gh/nanernunes/scaffold/branch/master/graph/badge.svg)](https://codecov.io/gh/nanernunes/scaffold)
 
-Scaffold is a Golang framework that automates the creation of Swaggered APIs.
+Scaffold is a Golang framework that includes everything needed to create database-backed API applications.
 
 ## Requirements
 
-- [gorilla/mux](https://github.com/gorilla/mux)
-- [swaggo/swag](https://github.com/swaggo/swag)
-- [go-orm/gorm](https://github.com/go-gorm/gorm)
+- [make]()
+- [Go](https://go.dev/)
 
-## Installation
+## Frameworks and libraries
 
-To install Scaffold, run the following command:
+Scaffold comes with:
+
+- [gorilla/mux](https://github.com/gorilla/mux), a powerful HTTP router and URL matcher for building Go web servers
+- [swaggo/swag](https://github.com/swaggo/swag), automatically generate RESTful API documentation with Swagger
+- [go-orm/gorm](https://github.com/go-gorm/gorm), the fantastic ORM library for Golang, aims to be developer friendly
+
+## Getting Started
+
+1. Install Scaffold at the command prompt:
 
 ```bash
 sudo curl -L "https://github.com/nanernunes/scaffold/releases/latest/download/scaffold-$(uname -s)-$(uname -m)" -o /usr/local/bin/scaffold
 sudo chmod +x /usr/local/bin/scaffold
 ```
 
-## Getting Started with Scaffold
-
-```go
-scaffold new blog
-scaffold generate User name:string age:int
-```
-
-## Folder Structure
+2. At the command prompt, create a new Scaffold application: (where `myapp` is the application name)
 
 ```bash
-.
-├── Makefile
-├── api
-│   ├── api.go
-│   └── controllers
-│       ├── index.go
-│       └── users.go
-├── app
-│   ├── models
-│   │   └── user.go
-│   └── services
-│       └── user.go
-├── cmd
-│   └── api.go
-├── config
-│   ├── api.go
-│   ├── application.go
-│   └── config.go
-├── go.mod
-└── go.sum
-
-7 directories, 12 files
+scaffold new myapp
 ```
 
-## Running the Server
+3. Change directory to `myapp` and start the web server:
 
-```sh
+```bash
+cd myapp
 make dev
 ```
+
+4. Go to http://localhost:4000 and you'll see the Swagger documentation.
+
+5. Under http://localhost:4000/index there is the default Index (controller/view) home page.
+
+6. Follow the guidelines to start developing your application:
+
+   - [Getting Started with Scaffold](docs/getting-started-with-scaffold.md)
 
 ## Contributing
 
