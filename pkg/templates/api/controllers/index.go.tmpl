@@ -18,7 +18,7 @@ func NewIndexController(router *scaffold.Router) (index *IndexController) {
 }
 
 func (i *IndexController) Index(c *scaffold.Context) {
-    c.RenderText(http.StatusOK, "It's Scaffolding!")
+    c.RenderHTML(http.StatusOK, "<h2>It's Scaffolding!</h2>")
 }
 
 func (i *IndexController) IndexToJSON(c *scaffold.Context) {

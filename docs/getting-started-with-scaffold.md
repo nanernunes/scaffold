@@ -101,7 +101,7 @@ func NewIndexController(router *scaffold.Router) (index *IndexController) {
 }
 
 func (i *IndexController) Index(c *scaffold.Context) {
-	c.RenderText(http.StatusOK, "It's Scaffolding!")
+	c.RenderHTML(http.StatusOK, "<h2>It's Scaffolding!</h2>")
 }
 
 func (i *IndexController) IndexToJSON(c *scaffold.Context) {
@@ -125,18 +125,6 @@ c.Render(200, []string{"scaffold", "framework"})
 ["scaffold", "framework"]
 ```
 
-#### RenderText
-
-Response with text value (plain/text)
-
-```go
-c.RenderText(200, "Scaffold Framework")
-```
-
-```text
-Scaffold Framework
-```
-
 #### RenderHTML
 
 Render the content in HTML (text/html)
@@ -148,6 +136,14 @@ c.RenderHTML(200, "Scaffold<br />Framework!")
 ```text
 Scaffold
 Framework!
+```
+
+#### RenderText
+
+Response with text value (plain/text) - file download
+
+```go
+c.RenderText(200, "Scaffold Framework")
 ```
 
 ## 4. Generating CRUD
