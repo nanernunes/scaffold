@@ -9,6 +9,11 @@ type {{ .ResourceName.Camel.ToString }} struct {
 
 	UUID string `json:"uuid,omitempty" gorm:"type:uuid;uniqueIndex"`
 	{{ range $key, $type := .ResourceFields }}
-	{{ $key.Camel.ToString }} {{ $type }} `json:"{{ $key.Lower.ToString }}"` 
+	{{ if eq $type "references" }}
+	{{ $key.Camel.ToString }}ID int `json:"-"`
+	{{ $key.Camel.ToString }} {{ $key.Camel.ToString }} `json:"{{ $key.Lower.ToString }}"`
+	{{ else -}}
+	{{ $key.Camel.ToString }} {{ $type }} `json:"{{ $key.Lower.ToString }}"`
+	{{- end }}
 	{{- end }}
 }

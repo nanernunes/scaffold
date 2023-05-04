@@ -11,7 +11,8 @@ Scaffold is a Golang framework that includes everything needed to create databas
 
 ## Requirements
 
-- [make]()
+- make (Makefile)
+- [SQLite](https://sqlite.org/)
 - [Go](https://go.dev/)
 
 ## Frameworks and libraries
