@@ -1,6 +1,9 @@
 package models
 
 import (
+	{{ range $i, $import := .Imports }}
+	"{{ $import }}"
+	{{ end }}
 	"gorm.io/gorm"
 )
 

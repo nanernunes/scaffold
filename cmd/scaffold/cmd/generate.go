@@ -13,10 +13,11 @@ import (
 )
 
 var types = map[string]string{
-	"string": "string",
-	"int":    "int",
-	"float":  "float64",
-	"bool":   "bool",
+	"string":   "string",
+	"int":      "int",
+	"float":    "float64",
+	"bool":     "bool",
+	"datetime": "time.Time",
 
 	"references": "references",
 }
@@ -55,12 +56,13 @@ func Generate(cmd *cobra.Command, args []string) {
 				}
 				log.Fatalf(
 					"type %s is not an allowed option, try one these: %s.",
-					color.RedString(field[1]),
+					color.YellowString(field[1]),
 					color.GreenString(strings.Join(keys, ", ")),
 				)
 			}
 
-			if field[1] == "references" {
+			switch field[1] {
+			case "references":
 				if _, err := os.Stat(path.Join("app", "models", strings.ToLower(field[0])+".go")); os.IsNotExist(err) {
 					log.Fatalf(
 						"there is no %s model in your project, try creating it before referencing it.",

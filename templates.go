@@ -24,11 +24,13 @@ type Template struct {
 	ProjectName    *helpers.Name
 	ResourceName   *helpers.Name
 	ResourceFields map[*helpers.Name]string
+	Imports        []string
 }
 
 func NewTemplate(project string) *Template {
 	return &Template{
 		ProjectName: helpers.NewName(project),
+		Imports:     make([]string, 0),
 	}
 }
 
@@ -97,6 +99,18 @@ func (t *Template) Skel() {
 func (t *Template) AddMVC(name string, fields map[*helpers.Name]string) {
 	t.ResourceName = helpers.NewName(name)
 	t.ResourceFields = fields
+
+	var importTime bool
+
+	for _, typ := range fields {
+		if typ == "time.Time" {
+			importTime = true
+		}
+	}
+
+	if importTime {
+		t.Imports = append(t.Imports, "time")
+	}
 
 	templates := map[string]string{
 		"pkg/templates/api/controllers/controller.go.tmpl": fmt.Sprintf("api/controllers/%s.go", t.ResourceName.Lower().Plural().ToString()),
