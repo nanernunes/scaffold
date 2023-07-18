@@ -78,14 +78,14 @@ func (c *Context) Render(statusCode int, src interface{}) {
 
 func (c *Context) Headers() map[string]string {
 	headers := make(map[string]string)
-	for key, values := range c.Response.Header() {
+	for key, values := range c.Request.Header {
 		headers[key] = values[0]
 	}
 	return headers
 }
 
 func (c *Context) Header(header string) string {
-	return c.Response.Header().Get(header)
+	return c.Request.Header.Get(header)
 }
 
 func (c *Context) Params() map[string]string {
