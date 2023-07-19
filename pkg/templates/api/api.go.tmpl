@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/fatih/color"
 	"github.com/nanernunes/scaffold"
 
 	"{{ .ProjectName.Lower.ToString }}/api/controllers"
@@ -17,12 +18,21 @@ type API struct {
 }
 
 func (a *API) Listen() {
+	done := make(chan error)
+	addr := a.Application.Config.API.ToString()
+
 	srv := &http.Server{
 		Handler: a.Router,
-		Addr:    a.Application.Config.API.ToString(),
+		Addr:    addr,
 	}
 
-	log.Fatal(srv.ListenAndServe())
+	go func(done chan error) {
+		done <- srv.ListenAndServe()
+	}(done)
+
+	log.Printf("Listening on %s", color.GreenString(addr))
+
+	<-done
 }
 
 func NewAPI(application *config.Application) (api *API) {

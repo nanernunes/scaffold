@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	reqs := helpers.NewRequirements("make", "go", "git", "sqlite3")
+	reqs := helpers.NewRequirements("make", "gcc", "g++", "go", "git", "sqlite3")
 
 	if missing := reqs.MissingPackages(); len(missing) != 0 {
 		fmt.Printf("Error: missing the following packages: %s.\n", color.RedString(strings.Join(missing, ", ")))
