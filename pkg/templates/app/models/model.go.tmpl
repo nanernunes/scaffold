@@ -11,6 +11,10 @@ type {{ .ResourceName.Camel.ToString }} struct {
 	gorm.Model `json:"-"`
 
 	UUID string `json:"uuid,omitempty" gorm:"type:uuid;uniqueIndex"`
+	{{ .ResourceName.Camel.ToString }}Attributes
+}
+
+type {{ .ResourceName.Camel.ToString }}Attributes struct {
 	{{ range $key, $type := .ResourceFields }}
 	{{ if eq $type "references" }}
 	{{ $key.Camel.ToString }}ID int `json:"-"`

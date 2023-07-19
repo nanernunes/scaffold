@@ -36,7 +36,7 @@ func ({{ .ResourceName.Lower.FirstLetter.ToString }}s *{{ .ResourceName.Camel.To
 }
 
 func ({{ .ResourceName.Lower.FirstLetter.ToString }}s *{{ .ResourceName.Camel.ToString }}Service) Delete(uuid string) error {
-	return {{ .ResourceName.Lower.FirstLetter.ToString }}s.DB.Delete(&models.{{ .ResourceName.Camel.ToString }}{UUID: uuid}).Error
+	return {{ .ResourceName.Lower.FirstLetter.ToString }}s.DB.Delete(&models.{{ .ResourceName.Camel.ToString }}{}, "uuid = ?", uuid).Error
 }
 
 func ({{ .ResourceName.Lower.FirstLetter.ToString }}s *{{ .ResourceName.Camel.ToString }}Service) Update(uuid string, {{ .ResourceName.Lower.ToString }} *models.{{ .ResourceName.Camel.ToString }}) error {

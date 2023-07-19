@@ -20,13 +20,13 @@ func New{{ .ResourceName.Camel.Plural.ToString }}Controller(router *scaffold.Rou
 	router.Resource("/{{ .ResourceName.Lower.Plural.ToString }}", controller)
 }
 
-//	@Summary		Get all {{ .ResourceName.Plural.ToString }}
-//	@Description	Get all {{ .ResourceName.Plural.ToString }}
-//	@Tags			{{ .ResourceName.Lower.Plural.ToString }}
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{array}	[]models.{{ .ResourceName.Camel.ToString }}
-//	@Router			/{{ .ResourceName.Lower.Plural.ToString }} [get]
+// @Summary Get all {{ .ResourceName.Plural.ToString }}
+// @Description Get all {{ .ResourceName.Plural.ToString }}
+// @Tags {{ .ResourceName.Lower.Plural.ToString }}
+// @Accept json
+// @Produce json
+// @Success 200 {array} []models.{{ .ResourceName.Camel.ToString }}
+// @Router /{{ .ResourceName.Lower.Plural.ToString }} [get]
 func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Plural.ToString }}Controller) Index(c *scaffold.Context) {
 	if {{ .ResourceName.Lower.Plural.ToString}}, err := {{ .ResourceName.FirstLetter.Lower.ToString }}c.Service.GetAll(); err == nil {
 		c.Render(http.StatusOK, &{{ .ResourceName.Lower.Plural.ToString}})
@@ -35,14 +35,14 @@ func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Pl
 	}
 }
 
-//	@Summary		Create {{ .ResourceName.Camel.ToString }}
-//	@Description	Create new {{ .ResourceName.Camel.ToString }}
-//	@Tags			{{ .ResourceName.Lower.Plural.ToString }}
-//	@Accept			json
-//	@Produce		json
-//	@Param			{{ .ResourceName.Camel.ToString }}	body		models.{{ .ResourceName.Camel.ToString }}	true	"{{ .ResourceName.Camel.ToString }} object"
-//	@Success		201		{object}	models.{{ .ResourceName.Camel.ToString }}
-//	@Router			/{{ .ResourceName.Lower.Plural.ToString }} [post]
+// @Summary Create {{ .ResourceName.Camel.ToString }}
+// @Description Create new {{ .ResourceName.Camel.ToString }}
+// @Tags {{ .ResourceName.Lower.Plural.ToString }}
+// @Accept json
+// @Produce json
+// @Param {{ .ResourceName.Camel.ToString }} body models.{{ .ResourceName.Camel.ToString }}Attributes true "{{ .ResourceName.Camel.ToString }} object"
+// @Success 201 {object} models.{{ .ResourceName.Camel.ToString }}
+// @Router /{{ .ResourceName.Lower.Plural.ToString }} [post]
 func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Plural.ToString }}Controller) Create(c *scaffold.Context) {
 	var {{ .ResourceName.ToString }} models.{{ .ResourceName.Camel.ToString }}
 	c.UnmarshalBody(&{{ .ResourceName.ToString }})
@@ -54,15 +54,15 @@ func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Pl
 	}
 }
 
-//	@Summary		Get {{ .ResourceName.Camel.ToString }}
-//	@Description	Get {{ .ResourceName.Camel.ToString }} by UUID
-//	@Tags			{{ .ResourceName.Lower.Plural.ToString }}
-//	@Accept			json
-//	@Produce		json
-//	@Param			uuid	path		string	true	"{{ .ResourceName.Camel.ToString }} UUID"
-//	@Success		200	{object}	models.{{ .ResourceName.Camel.ToString }}
-//	@Failure		404	{object}	scaffold.ResponseError
-//	@Router			/{{ .ResourceName.Lower.Plural.ToString }}/{uuid} [get]
+// @Summary Get {{ .ResourceName.Camel.ToString }}
+// @Description Get {{ .ResourceName.Camel.ToString }} by UUID
+// @Tags {{ .ResourceName.Lower.Plural.ToString }}
+// @Accept json
+// @Produce json
+// @Param uuid path string true "{{ .ResourceName.Camel.ToString }} UUID"
+// @Success 200 {object} models.{{ .ResourceName.Camel.ToString }}
+// @Failure 404 {object} scaffold.ResponseError
+// @Router /{{ .ResourceName.Lower.Plural.ToString }}/{uuid} [get]
 func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Plural.ToString }}Controller) Show(c *scaffold.Context) {
 	if {{ .ResourceName.Lower.ToString}}, err := {{ .ResourceName.FirstLetter.Lower.ToString }}c.Service.GetOne(c.Param("uuid")); err == nil {
 		c.Render(http.StatusOK, &{{ .ResourceName.Lower.ToString}})
@@ -71,16 +71,16 @@ func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Pl
 	}
 }
 
-//	@Summary		Update {{ .ResourceName.Camel.ToString }}
-//	@Description	Update {{ .ResourceName.Camel.ToString }} by UUID
-//	@Tags			{{ .ResourceName.Lower.Plural.ToString }}
-//	@Accept			json
-//	@Produce		json
-//	@Param			uuid		path	string			true	"{{ .ResourceName.Camel.ToString }} UUID"
-//	@Param			{{ .ResourceName.Camel.ToString }}	body	models.{{ .ResourceName.Camel.ToString }}	true	"{{ .ResourceName.Camel.ToString }} object"
-//	@Success		204
-//	@Failure		404	{object}	scaffold.ResponseError
-//	@Router			/{{ .ResourceName.Lower.Plural.ToString }}/{uuid} [patch]
+// @Summary Update {{ .ResourceName.Camel.ToString }}
+// @Description Update {{ .ResourceName.Camel.ToString }} by UUID
+// @Tags {{ .ResourceName.Lower.Plural.ToString }}
+// @Accept json
+// @Produce json
+// @Param uuid path string true "{{ .ResourceName.Camel.ToString }} UUID"
+// @Param {{ .ResourceName.Camel.ToString }} body models.{{ .ResourceName.Camel.ToString }}Attributes true "{{ .ResourceName.Camel.ToString }} object"
+// @Success 204
+// @Failure 404 {object} scaffold.ResponseError
+// @Router /{{ .ResourceName.Lower.Plural.ToString }}/{uuid} [patch]
 func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Plural.ToString }}Controller) Update(c *scaffold.Context) {
 	var {{ .ResourceName.Lower.ToString }} models.{{ .ResourceName.Camel.ToString }}
 	c.UnmarshalBody(&{{ .ResourceName.Lower.ToString }})
@@ -92,15 +92,15 @@ func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Pl
 	}
 }
 
-//	@Summary		Delete {{ .ResourceName.Camel.ToString }}
-//	@Description	Delete {{ .ResourceName.Camel.ToString }} by UUID
-//	@Tags			{{ .ResourceName.Lower.Plural.ToString }}
-//	@Accept			json
-//	@Produce		json
-//	@Param			uuid	path	string	true	"{{ .ResourceName.Camel.ToString }} UUID"
-//	@Success		204
-//	@Failure		404	{object}	scaffold.ResponseError
-//	@Router			/{{ .ResourceName.Lower.Plural.ToString }}/{uuid} [delete]
+// @Summary Delete {{ .ResourceName.Camel.ToString }}
+// @Description Delete {{ .ResourceName.Camel.ToString }} by UUID
+// @Tags {{ .ResourceName.Lower.Plural.ToString }}
+// @Accept json
+// @Produce json
+// @Param uuid path string true "{{ .ResourceName.Camel.ToString }} UUID"
+// @Success 204
+// @Failure 404 {object} scaffold.ResponseError
+// @Router /{{ .ResourceName.Lower.Plural.ToString }}/{uuid} [delete]
 func ({{ .ResourceName.FirstLetter.Lower.ToString }}c *{{ .ResourceName.Camel.Plural.ToString }}Controller) Delete(c *scaffold.Context) {
 	if err := {{ .ResourceName.FirstLetter.Lower.ToString }}c.Service.Delete(c.Param("uuid")); err == nil {
 		c.Render(http.StatusOK, err == nil)
