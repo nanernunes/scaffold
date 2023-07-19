@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"go/build"
 	"go/format"
-	"html/template"
 	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
+	"text/template"
 
 	"github.com/fatih/color"
 	"github.com/nanernunes/scaffold/pkg/helpers"
